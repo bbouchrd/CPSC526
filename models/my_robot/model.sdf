@@ -1,0 +1,867 @@
+<?xml version='1.0'?>
+<sdf version='1.4'>
+	<model name="my_robot">
+		<static>false</static>
+
+    <joint type="fixed" name="joint_78">
+      <child>link8</child>
+      <parent>link7</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_47">
+      <child>link7</child>
+      <parent>link4</parent>
+    </joint>
+
+    <link name='link8'>  <!-- head -->
+      <pose>0 0 3.75 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.2</radius>
+          </sphere> 
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.2</radius>
+          </sphere>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link7'>  <!-- neck -->
+      <pose>0 0 3.55 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.05</radius>
+            <length>.2</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.05</radius>
+            <length>.2</length>
+          </cylinder>       
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link6l'>  <!-- left lower arm -->
+      <pose>-.5 0 2.05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link6r'>  <!-- right lower arm -->
+      <pose>.5 0 2.05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link6lballjoint0">
+      <child>link6lball0</child>
+      <parent>link6l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link6rballjoint0">
+      <child>link6rball0</child>
+      <parent>link6r</parent>
+    </joint>
+
+    <link name='link6lball0'>
+      <pose>-.5 0 2.55 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link6rball0'>
+      <pose>.5 0 2.55 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="joint_5l6l">
+      <child>link6lball0</child>
+      <parent>link5lball</parent>
+    </joint>
+
+    <joint type="revolute" name="joint_5r6r">
+      <child>link6rball0</child>
+      <parent>link5rball</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link5lballjoint">
+      <child>link5lball</child>
+      <parent>link5l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link5rballjoint">
+      <child>link5rball</child>
+      <parent>link5r</parent>
+    </joint>
+
+    <link name='link5lball'>
+      <pose>-.5 0 2.65 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link5rball'>
+      <pose>.5 0 2.65 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link5l'>  <!-- left arm -->
+      <pose>-.5 0 2.95 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link5r'>  <!-- right arm -->
+      <pose>.5 0 2.95 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link5lballjoint0">
+      <child>link5lball0</child>
+      <parent>link5l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link5rballjoint0">
+      <child>link5rball0</child>
+      <parent>link5r</parent>
+    </joint>
+
+    <link name='link5lball0'>
+      <pose>-.5 0 3.25 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link5rball0'>
+      <pose>.5 0 3.25 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="joint_45l">
+      <child>link5lball0</child>
+      <parent>link4lball</parent>
+    </joint>
+
+    <joint type="revolute" name="joint_45r">
+      <child>link5rball0</child>
+      <parent>link4rball</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_34">
+      <child>link4</child>
+      <parent>link3</parent>
+    </joint>
+
+    <link name='link4lball'>
+      <pose>-.5 0 3.35 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link4rball'>
+      <pose>.5 0 3.35 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link4lballjoint">
+      <child>link4lball</child>
+      <parent>link4</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link4rballjoint">
+      <child>link4rball</child>
+      <parent>link4</parent>
+    </joint>
+
+    <link name='link4'>  <!-- shoulder -->
+      <pose>0 0 3.35 0 1.57079632 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>1</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_03">
+      <child>link3</child>
+      <parent>link0</parent>
+    </joint>
+
+    <link name='link3'>  <!-- trunk -->
+      <pose>0 0 2.75 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>1</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>1</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link0'>  <!-- root/pelvis -->
+      <pose>0 0 2.15 0 1.57079632 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.5</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="joint_01l">
+      <child>link0lball</child>
+      <parent>link1lball0</parent>
+    </joint>
+
+    <joint type="revolute" name="joint_01r">
+      <child>link0rball</child>
+      <parent>link1rball0</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link0lballjoint">
+      <child>link0lball</child>
+      <parent>link0</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link0rballjoint">
+      <child>link0rball</child>
+      <parent>link0</parent>
+    </joint>
+
+    <link name='link0lball'>
+      <pose>-.25 0 2.1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link0rball'>
+      <pose>.25 0 2.1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link1lball0'>
+      <pose>-.25 0 2 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link1rball0'>
+      <pose>.25 0 2 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link1lballjoint0">
+      <child>link1lball0</child>
+      <parent>link1l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link1rballjoint0">
+      <child>link1rball0</child>
+      <parent>link1r</parent>
+    </joint>
+
+    <link name='link1l'>  <!-- left hip -->
+      <pose>-.25 0 1.55 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.8</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.8</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link1r'>  <!-- right hip -->
+      <pose>.25 0 1.55 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.8</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.8</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link1lballjoint">
+      <child>link1lball</child>
+      <parent>link1l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link1rballjoint">
+      <child>link1rball</child>
+      <parent>link1r</parent>
+    </joint>
+
+    <link name='link1lball'>
+      <pose>-.25 0 1.1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link1rball'>
+      <pose>.25 0 1.1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="joint_1l2l">
+      <child>link2lball0</child>
+      <parent>link1lball</parent>
+    </joint>
+
+    <joint type="revolute" name="joint_1r2r">
+      <child>link2rball0</child>
+      <parent>link1rball</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link2lballjoint0">
+      <child>link2lball0</child>
+      <parent>link2l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link2rballjoint0">
+      <child>link2rball0</child>
+      <parent>link2r</parent>
+    </joint>
+
+    <link name='link2lball0'>
+      <pose>-.25 0 1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link2rball0'>
+      <pose>.25 0 1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link2l'>  <!-- left lower leg -->
+      <pose>-.25 0 .5 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link2r'>  <!-- right lower leg -->
+      <pose>.25 0 .5 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <cylinder>
+            <radius>.1</radius>
+            <length>.9</length>
+          </cylinder>        
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="fixed" name="joint_link2lballjoint">
+      <child>link2lball</child>
+      <parent>link2l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link2rballjoint">
+      <child>link2rball</child>
+      <parent>link2r</parent>
+    </joint>
+
+    <link name='link2lball'>
+      <pose>-.25 0 .1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link2rball'>
+      <pose>.25 0 .1 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.1</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <joint type="revolute" name="joint_2l9l">
+      <child>link9lball0</child>
+      <parent>link2lball</parent>
+    </joint>
+
+    <joint type="revolute" name="joint_2r9r">
+      <child>link9rball0</child>
+      <parent>link2rball</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link9lballjoint0">
+      <child>link9lball0</child>
+      <parent>link9l</parent>
+    </joint>
+
+    <joint type="fixed" name="joint_link9rballjoint0">
+      <child>link9rball0</child>
+      <parent>link9r</parent>
+    </joint>
+
+    <link name='link9lball0'>
+      <pose>-.25 0 .05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.05</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link9rball0'>
+      <pose>.25 0 .05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <sphere>
+            <radius>.05</radius>
+          </sphere>
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <sphere>
+            <radius>.05</radius>
+          </sphere>      
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link9l'>  <!-- left foot -->
+      <pose>-.25 -.1 0.05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>.2 .2 .1</size>
+          </box>  
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <box>
+            <size>.2 .2 .1</size>
+          </box>        
+        </geometry>
+      </visual>
+    </link>
+
+    <link name='link9r'>  <!-- right foot -->
+      <pose>.25 -.1 0.05 0 0 0</pose>
+      <collision name='collision'>
+        <geometry>
+          <box>
+            <size>.2 .2 .1</size>
+          </box>  
+        </geometry>
+      </collision>
+
+      <visual name='visual'>
+        <geometry>
+          <box>
+            <size>.2 .2 .1</size>
+          </box>        
+        </geometry>
+      </visual>
+    </link>
+
+
+	</model>
+</sdf>
