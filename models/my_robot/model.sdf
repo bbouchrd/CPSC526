@@ -14,6 +14,10 @@
     </joint>
 
     <link name='link8'>  <!-- head -->
+      <inertial>
+        <mass>0.4</mass>
+      </inertial>
+      <self_collide>1</self_collide>
       <pose>0 0 3.75 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -33,6 +37,10 @@
     </link>
 
     <link name='link7'>  <!-- neck -->
+      <inertial>
+        <mass>0.01875</mass>
+      </inertial>
+      <self_collide>1</self_collide>
       <pose>0 0 3.55 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -47,19 +55,23 @@
         <geometry>
           <cylinder>
             <radius>.05</radius>
-            <length>.2</length>
+            <length>.25</length>
           </cylinder>       
         </geometry>
       </visual>
     </link>
 
     <link name='link6l'>  <!-- left lower arm -->
-      <pose>-.5 0 2.05 0 0 0</pose>
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>-.5 0 1.95 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.9</length>
+            <radius>.075</radius>
+            <length>.8</length>
           </cylinder>
         </geometry>
       </collision>
@@ -67,20 +79,24 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.9</length>
+            <radius>.075</radius>
+            <length>.8</length>
           </cylinder>        
         </geometry>
       </visual>
     </link>
 
     <link name='link6r'>  <!-- right lower arm -->
-      <pose>.5 0 2.05 0 0 0</pose>
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>.5 0 1.95 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.9</length>
+            <radius>.075</radius>
+            <length>.8</length>
           </cylinder>
         </geometry>
       </collision>
@@ -88,8 +104,8 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>.9</length>
+            <radius>.075</radius>
+            <length>.8</length>
           </cylinder>        
         </geometry>
       </visual>
@@ -106,7 +122,10 @@
     </joint>
 
     <link name='link6lball0'>
-      <pose>-.5 0 2.55 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>-.5 0 2.4 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -125,7 +144,10 @@
     </link>
 
     <link name='link6rball0'>
-      <pose>.5 0 2.55 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>.5 0 2.4 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -146,11 +168,35 @@
     <joint type="revolute" name="joint_5l6l">
       <child>link6lball0</child>
       <parent>link5lball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>0</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="revolute" name="joint_5r6r">
       <child>link6rball0</child>
       <parent>link5rball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>0</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="fixed" name="joint_link5lballjoint">
@@ -164,7 +210,10 @@
     </joint>
 
     <link name='link5lball'>
-      <pose>-.5 0 2.65 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>-.5 0 2.5 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -183,7 +232,10 @@
     </link>
 
     <link name='link5rball'>
-      <pose>.5 0 2.65 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>.5 0 2.5 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -202,11 +254,15 @@
     </link>
 
     <link name='link5l'>  <!-- left arm -->
-      <pose>-.5 0 2.95 0 0 0</pose>
+      <inertial>
+        <mass>0.375</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>-.5 0 2.8 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>
         </geometry>
@@ -215,7 +271,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>        
         </geometry>
@@ -223,11 +279,15 @@
     </link>
 
     <link name='link5r'>  <!-- right arm -->
-      <pose>.5 0 2.95 0 0 0</pose>
+      <inertial>
+        <mass>0.375</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>.5 0 2.8 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>
         </geometry>
@@ -236,7 +296,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>        
         </geometry>
@@ -254,7 +314,10 @@
     </joint>
 
     <link name='link5lball0'>
-      <pose>-.5 0 3.25 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>-.5 0 3.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -273,7 +336,10 @@
     </link>
 
     <link name='link5rball0'>
-      <pose>.5 0 3.25 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>.5 0 3.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -294,11 +360,35 @@
     <joint type="revolute" name="joint_45l">
       <child>link5lball0</child>
       <parent>link4lball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>0.79</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="revolute" name="joint_45r">
       <child>link5rball0</child>
       <parent>link4rball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-3.14</lower>
+          <upper>0.79</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="fixed" name="joint_34">
@@ -307,7 +397,10 @@
     </joint>
 
     <link name='link4lball'>
-      <pose>-.5 0 3.35 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>-.5 0 3.2 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -326,7 +419,10 @@
     </link>
 
     <link name='link4rball'>
-      <pose>.5 0 3.35 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
+      <pose>.5 0 3.2 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <sphere>
@@ -355,11 +451,15 @@
     </joint>
 
     <link name='link4'>  <!-- shoulder -->
+      <inertial>
+        <mass>0.75</mass>
+      </inertial>
+      <self_collide>1</self_collide>
       <pose>0 0 3.35 0 1.57079632 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>1</length>
           </cylinder>
         </geometry>
@@ -368,7 +468,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>1</length>
           </cylinder>        
         </geometry>
@@ -381,12 +481,16 @@
     </joint>
 
     <link name='link3'>  <!-- trunk -->
-      <pose>0 0 2.75 0 0 0</pose>
+      <inertial>
+        <mass>0.7125</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>0 0 2.8 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>1</length>
+            <radius>.075</radius>
+            <length>.95</length>
           </cylinder>
         </geometry>
       </collision>
@@ -394,19 +498,23 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
-            <length>1</length>
+            <radius>.075</radius>
+            <length>.95</length>
           </cylinder>        
         </geometry>
       </visual>
     </link>
 
     <link name='link0'>  <!-- root/pelvis -->
-      <pose>0 0 2.15 0 1.57079632 0</pose>
+      <inertial>
+        <mass>0.375</mass>
+      </inertial>
+      <self_collide>1</self_collide>
+      <pose>0 0 2.25 0 1.57079632 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>
         </geometry>
@@ -415,7 +523,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.5</length>
           </cylinder>        
         </geometry>
@@ -425,11 +533,35 @@
     <joint type="revolute" name="joint_01l">
       <child>link0lball</child>
       <parent>link1lball0</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>3.14</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="revolute" name="joint_01r">
       <child>link0rball</child>
       <parent>link1rball0</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>3.14</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="fixed" name="joint_link0lballjoint">
@@ -443,6 +575,9 @@
     </joint>
 
     <link name='link0lball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>-.25 0 2.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -462,6 +597,9 @@
     </link>
 
     <link name='link0rball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>.25 0 2.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -481,6 +619,9 @@
     </link>
 
     <link name='link1lball0'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>-.25 0 2 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -500,6 +641,9 @@
     </link>
 
     <link name='link1rball0'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>.25 0 2 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -529,11 +673,15 @@
     </joint>
 
     <link name='link1l'>  <!-- left hip -->
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
+      <self_collide>1</self_collide>
       <pose>-.25 0 1.55 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.8</length>
           </cylinder>
         </geometry>
@@ -542,7 +690,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.8</length>
           </cylinder>        
         </geometry>
@@ -550,11 +698,15 @@
     </link>
 
     <link name='link1r'>  <!-- right hip -->
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
+      <self_collide>1</self_collide>
       <pose>.25 0 1.55 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.8</length>
           </cylinder>
         </geometry>
@@ -563,7 +715,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.8</length>
           </cylinder>        
         </geometry>
@@ -581,6 +733,9 @@
     </joint>
 
     <link name='link1lball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>-.25 0 1.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -600,6 +755,9 @@
     </link>
 
     <link name='link1rball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>.25 0 1.1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -621,11 +779,35 @@
     <joint type="revolute" name="joint_1l2l">
       <child>link2lball0</child>
       <parent>link1lball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>3.14</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="revolute" name="joint_1r2r">
       <child>link2rball0</child>
       <parent>link1rball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>0</lower>
+          <upper>3.14</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="fixed" name="joint_link2lballjoint0">
@@ -639,6 +821,9 @@
     </joint>
 
     <link name='link2lball0'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>-.25 0 1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -658,6 +843,9 @@
     </link>
 
     <link name='link2rball0'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>.25 0 1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -677,11 +865,14 @@
     </link>
 
     <link name='link2l'>  <!-- left lower leg -->
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
       <pose>-.25 0 .5 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.9</length>
           </cylinder>
         </geometry>
@@ -690,7 +881,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.9</length>
           </cylinder>        
         </geometry>
@@ -698,11 +889,14 @@
     </link>
 
     <link name='link2r'>  <!-- right lower leg -->
+      <inertial>
+        <mass>0.6</mass>
+      </inertial>
       <pose>.25 0 .5 0 0 0</pose>
       <collision name='collision'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.9</length>
           </cylinder>
         </geometry>
@@ -711,7 +905,7 @@
       <visual name='visual'>
         <geometry>
           <cylinder>
-            <radius>.1</radius>
+            <radius>.075</radius>
             <length>.9</length>
           </cylinder>        
         </geometry>
@@ -729,6 +923,9 @@
     </joint>
 
     <link name='link2lball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>-.25 0 .1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -748,6 +945,9 @@
     </link>
 
     <link name='link2rball'>
+      <inertial>
+        <mass>0.1</mass>
+      </inertial>
       <pose>.25 0 .1 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -769,11 +969,35 @@
     <joint type="revolute" name="joint_2l9l">
       <child>link9lball0</child>
       <parent>link2lball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-0.79</lower>
+          <upper>0.79</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="revolute" name="joint_2r9r">
       <child>link9rball0</child>
       <parent>link2rball</parent>
+      <axis>
+        <xyz>1 0 0 </xyz>
+        <limit>
+          <lower>-0.79</lower>
+          <upper>0.79</upper>
+        </limit>
+        <dynamics>
+          <friction>0.0001</friction>
+          <spring_reference>0</spring_reference>
+          <spring_stiffness>0</spring_stiffness>
+        </dynamics>
+      </axis>
     </joint>
 
     <joint type="fixed" name="joint_link9lballjoint0">
@@ -787,6 +1011,9 @@
     </joint>
 
     <link name='link9lball0'>
+      <inertial>
+        <mass>0.0125</mass>
+      </inertial>
       <pose>-.25 0 .05 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -806,6 +1033,9 @@
     </link>
 
     <link name='link9rball0'>
+      <inertial>
+        <mass>0.0125</mass>
+      </inertial>
       <pose>.25 0 .05 0 0 0</pose>
       <collision name='collision'>
         <geometry>
@@ -825,8 +1055,11 @@
     </link>
 
     <link name='link9l'>  <!-- left foot -->
-      <pose>-.25 -.1 0.05 0 0 0</pose>
+      <inertial>
+        <mass>0.1432</mass>
+      </inertial>
       <collision name='collision'>
+        <pose>-.25 -.1 0.05 0 0 0</pose>
         <geometry>
           <box>
             <size>.2 .2 .1</size>
@@ -835,17 +1068,21 @@
       </collision>
 
       <visual name='visual'>
+        <pose>-.25 -.05 0.05 0 0 0</pose>
         <geometry>
           <box>
-            <size>.2 .2 .1</size>
+            <size>.2 .3 .1</size>
           </box>        
         </geometry>
       </visual>
     </link>
 
     <link name='link9r'>  <!-- right foot -->
-      <pose>.25 -.1 0.05 0 0 0</pose>
+      <inertial>
+        <mass>0.1432</mass>
+      </inertial>
       <collision name='collision'>
+        <pose>.25 -.1 0.05 0 0 0</pose>
         <geometry>
           <box>
             <size>.2 .2 .1</size>
@@ -854,9 +1091,10 @@
       </collision>
 
       <visual name='visual'>
+        <pose>.25 -.05 0.05 0 0 0</pose>
         <geometry>
           <box>
-            <size>.2 .2 .1</size>
+            <size>.2 .3 .1</size>
           </box>        
         </geometry>
       </visual>
