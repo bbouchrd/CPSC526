@@ -173,11 +173,11 @@
         <limit>
           <lower>-3.14</lower>
           <upper>0</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -190,11 +190,11 @@
         <limit>
           <lower>-3.14</lower>
           <upper>0</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -365,11 +365,11 @@
         <limit>
           <lower>-3.14</lower>
           <upper>0.79</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -382,11 +382,11 @@
         <limit>
           <lower>-3.14</lower>
           <upper>0.79</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -538,11 +538,11 @@
         <limit>
           <lower>0</lower>
           <upper>3.14</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -555,11 +555,11 @@
         <limit>
           <lower>0</lower>
           <upper>3.14</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -784,11 +784,11 @@
         <limit>
           <lower>0</lower>
           <upper>3.14</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -801,11 +801,11 @@
         <limit>
           <lower>0</lower>
           <upper>3.14</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -974,11 +974,11 @@
         <limit>
           <lower>-0.79</lower>
           <upper>0.79</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
@@ -991,11 +991,11 @@
         <limit>
           <lower>-0.79</lower>
           <upper>0.79</upper>
+          <stiffness>25000</stiffness>
+          <effort>100</effort>
         </limit>
         <dynamics>
           <friction>0.0001</friction>
-          <spring_reference>0</spring_reference>
-          <spring_stiffness>0</spring_stiffness>
         </dynamics>
       </axis>
     </joint>
