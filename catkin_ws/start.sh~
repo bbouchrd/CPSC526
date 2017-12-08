@@ -1,0 +1,4 @@
+pkill roscore
+roscore &
+source devel/setup.sh
+nohup roslaunch my_robot_control my_robot.launch &

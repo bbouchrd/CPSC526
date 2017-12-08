@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<sdf version="1.4">
+     <world name="my_robot_world">
+     	    <include>
+		<uri>model://sun</uri>	    
+	    </include>
+     	    <include>
+		<uri>model://ground_plane</uri>	    
+	    </include>
+     </world>	    
+</sdf>
