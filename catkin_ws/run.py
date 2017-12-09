@@ -29,7 +29,7 @@ class ActorCritic:
 		_, self.target_actor_model = self.create_actor_model()
 
 		self.actor_critic_grad = tf.placeholder(tf.float32, 
-			[None, self.env.action_space.shape[0]])
+			[None, self.env.action_space_shape[0]])
 
 		actor_model_weights = self.actor_model.trainable_weights
 		self.actor_grads = tf.gradients(self.actor_model.output,
@@ -43,7 +43,7 @@ class ActorCritic:
 		h1 = Dense(24, activation='relu')(state_input)
 		h2 = Dense(48, activation='relu')(h1)
 		h3 = Dense(24, activation='relu')(h2)
-		output = Dense(self.env.action_space.shape[0], activation='relu')(h3)
+		output = Dense(self.env.action_space_shape[0], activation='relu')(h3)
 
 		model = Model(input=state_input, output=output)
 		adam = Adam(lr=0.001)
@@ -55,7 +55,7 @@ class ActorCritic:
 		state_h1 = Dense(24, activation='relu')(state_input)
 		state_h2 = Dense(48)(state_h1)
 
-		action_input = Input(shape=self.env.action_space.shape)
+		action_input = Input(shape=self.env.action_space_shape)
 		action_h1 = Dense(48)(action_input)
 
 		merged = Add()([state_h2, action_h1])
@@ -114,12 +114,15 @@ class ActorCritic:
 	def act(self, cur_state):
 		self.epsilon *= self.epsilon_decay
 		if np.random.random() < self.epsilon:
-			return self.env.action_space.sample()
+			return self.env.sample_action()
 		return self.actor_model.predict(cur_state)
 
 class Env:
 	def __init__(self):
-		pass
+		self.observation_space = np.zeros() 
+		self.observation_space_shape = self.observation_space.shape
+		self.joint_names = ['joint_5l6l', 'joint_5r6r', 'joint_45l', 'joint_45r', 'joint_01l', 'joint_01r', 'joint_1l2l', 'joint_1r2r', 'joint_2l9l', 'joint_2r9r']
+		self.action_space_shape = [len(self.joint_names)]
 
 	def spawn_figure(self):
 		subprocess.check_call(["rosrun", "gazebo_ros", "spawn_model", "-database", "my_robot", "-gazebo",
@@ -128,8 +131,12 @@ class Env:
 	def pause(self):
 		subprocess.call(["rosservice", "call", "gazebo/pause_physics"])
 
+	def unpause(self):
+		subprocess.call(["rosservice", "call", "gazebo/unpause_physics"])
+
 	def reset(self):
-		subprocess.check_call(["rosservice", "call", "gazebo/"])
+		subprocess.check_call(["rosservice", "call", "gazebo/reset_simulation"])
+		return get_model_state()
 
 	def get_model_state(self):
 		output = subprocess.check_output(["rosservice", "call", "gazebo/get_model_state", "figure", "world"])
@@ -138,6 +145,29 @@ class Env:
 	def get_link_state(self, link_name):
 		output = subprocess.check_output(["rosservice", "call", "gazebo/get_link_state", link_name, "world"])
 		return parse_state_str(output)
+
+	def sample_action(self):
+		return np.random.standard_normal(size=(self.action_space_shape[0], )) * 10
+
+	def clear_joint_forces(self):
+		subprocess.checkout_output(["rosservice", "call", "gazebo/clear_joint_forces", 
+			"{joint_name: %(joint_list)s}" % {'joint_list': joint_names}])
+
+	def step(self, action):
+		self.unpause()
+		for i in range(len(action)):
+			subprocess.call(["rosservice", "call", "gazebo/apply_joint_effort", """joint_name: '%(joint_name)s'
+				effort: %(effort)d
+				start_time:
+					secs: 0
+					nsecs: 0
+				duration:
+					secs: 0
+					nsecs: 1000000""" % {'joint_name': self.joint_names[i], 'effort': action[i]}])
+		self.pause()
+
+		return get_model_state()
+
 
 
 def parse_state_str(str):
@@ -184,25 +214,21 @@ def main():
 
 	sess = tf.Session()
 	K.set_session(sess)
-	env = {
-		observation_space: 0, #input shape
-		action_space: 0 #output shape
-	}
 	actor_critic = ActorCritic(env, sess)
 
 	num_trials = 10000
 	trial_len = 500
 
-	cur_state = env.reset() # set to default variables
-	action = env.action_space.sample()
+	cur_state = env.reset()
+	action = env.sample_action()
 	while True:
-		env.render() # update environ variables?
-		cur_state = cur_state.reshape((1, env.observation_space.shape[0]))
+		# env.render() # update environ variables?
+		# cur_state = cur_state.reshape((1, env.observation_space.shape[0]))
 		action = actor_critic.act(cur_state)
-		action = action.reshape((1, env.action_space.shape[0]))
+		action = action.reshape((1, env.action_space_shape[0]))
 
-		new_state, reward, done, _ = env.step(action)
-		new_state, = new_state.reshape((1, env.observation_space.shape[0]))
+		new_state, reward, done = env.step(action)
+		new_state = new_state.reshape((1, env.observation_space.shape[0]))
 
 		actor_critic.remember(cur_state, action, reward, new_state, done)
 		actor_critic.train()
