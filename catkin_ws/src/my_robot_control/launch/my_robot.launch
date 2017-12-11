@@ -4,7 +4,7 @@
      <arg name="paused" value="true"/>
      <arg name="use_sim_time" value="true"/>
      <arg name="gui" value="false"/>
-     <arg name="recording" value="false"/>
+     <arg name="recording" value="true"/>
      <arg name="debug" value="false"/>
   </include>
 </launch>

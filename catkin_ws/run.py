@@ -6,7 +6,7 @@ import random
 import sys
 import os
 
-from gazebo_msgs.srv import GetModelState, GetLinkState, ApplyJointEffort 
+from gazebo_msgs.srv import GetModelState, GetLinkState, ApplyJointEffort, JointRequest
 from std_srvs.srv import Empty
 import roslaunch
 import rospy
@@ -65,11 +65,13 @@ class ActorCritic:
         x = samples[:, 0:23] # cur_state, action
         y = samples[:, 24] # new_reward
         self.critic_model.train_on_batch(x, y)
+#        self.critic_model.fit(x, y)
 
     def _train_actor(self, samples):
         x = samples[:, 0:13] # cur_state
         y = samples[:, 13:23] # action
         self.actor_model.train_on_batch(x, y)
+#        self.actor_model.fit(x, y)
 
     def clear_memory(self):
         self.memory = None
@@ -126,23 +128,27 @@ class Env:
         return parse_state(output.link_state)
 
     def sample_action(self):
-        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 20
+        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
 
     def clear_joint_forces(self):
-        subprocess.check_output(["rosservice", "call", "gazebo/clear_joint_forces", 
-            "{joint_name: %(joint_list)s}" % {'joint_list': self.joint_names}])
+        call = rospy.ServiceProxy('gazebo/clear_joint_forces', JointRequest)
+        for i in range(10):
+            call({joint_name: self.joint_names[i]})
+        # subprocess.check_output(["rosservice", "call", "gazebo/clear_joint_forces", 
+        #     "{joint_name: %(joint_list)s}" % {'joint_list': self.joint_names}])
 
     def step(self, action):
         call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
         for i in range(len(action[0])):
             try: 
-                call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration.from_sec(0.1))
+                call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration(0.1))
             except rospy.ServiceException, e:
                 print e
 
         self.unpause()
-        time.sleep(0.1)
+        rospy.sleep(0.1)
         self.pause()
+        self.clear_joint_forces
         model_state = self.get_model_state()
         reward, done = standing_objective(self)
         return model_state, reward, done
@@ -187,10 +193,10 @@ def main():
         AC.clear_memory()
         for i in range(trial_len):
             action = AC.act(cur_state)
+            # print action
             new_state, reward, done = env.step(action)
             if done or i+1 == trial_len:
-                if j%10 == 0:
-                    print "trial", j, "lasted", i * 0.1
+                print "trial", j, "lasted", i * 0.1
                 break
 
             target_action = AC.actor_model.predict(new_state).reshape((1, 10))
