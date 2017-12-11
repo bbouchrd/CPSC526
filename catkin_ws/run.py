@@ -6,6 +6,11 @@ import random
 import sys
 import os
 
+from gazebo_msgs.srv import GetModelState, GetLinkState, ApplyJointEffort 
+from std_srvs.srv import Empty
+import roslaunch
+import rospy
+
 from keras.models import Sequential
 from keras.layers import Dense
 from keras.optimizers import Adam
@@ -92,105 +97,66 @@ class Env:
         self.state_shape = (13, )
         self.action_shape = (10, )
 
-    def spawn_figure(self):
-        subprocess.check_call(["rosrun", "gazebo_ros", "spawn_model", "-database", "my_robot", "-gazebo",
-            "-model", "figure", "-y", "0", "-x", "0"])
+        self.pause = rospy.ServiceProxy('gazebo/pause_physics', Empty)
+        self.unpause = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
+        self.reset = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
 
-    def pause(self):
-        subprocess.call(["rosservice", "call", "gazebo/pause_physics"])
 
-    def unpause(self):
-        subprocess.call(["rosservice", "call", "gazebo/unpause_physics"])
+    # def pause(self):
+    #     call = rospy.ServiceProxy('gazebo/pause_physics', Empty)
+    #     call()
 
-    def reset(self):
-        subprocess.check_call(["rosservice", "call", "gazebo/reset_simulation"])
-        return self.get_model_state()
+    # def unpause(self):
+    #     call = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
+    #     call()
+
+    # def reset(self):
+    #     call = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
+    #     call()
+    #     return self.get_model_state()
 
     def get_model_state(self):
-        output = subprocess.check_output(["rosservice", "call", "gazebo/get_model_state", "figure", "world"])
-        return parse_state_str(output, True)
+        call_get_state = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
+        output = call_get_state('my_robot', 'world')
+        return parse_state(output)
 
     def get_link_state(self, link_name):
-        output = subprocess.check_output(["rosservice", "call", "gazebo/get_link_state", link_name, "world"])
-        return parse_state_str(output, False)
+        call_get_state = rospy.ServiceProxy('gazebo/get_link_state', GetLinkState)
+        output = call_get_state(link_name, 'world')
+        return parse_state(output.link_state)
 
     def sample_action(self):
         return (np.random.random([self.action_space_shape[0]]) - 0.5) * 20
 
     def clear_joint_forces(self):
-        subprocess.checkout_output(["rosservice", "call", "gazebo/clear_joint_forces", 
-            "{joint_name: %(joint_list)s}" % {'joint_list': joint_names}])
+        subprocess.check_output(["rosservice", "call", "gazebo/clear_joint_forces", 
+            "{joint_name: %(joint_list)s}" % {'joint_list': self.joint_names}])
 
     def step(self, action):
-        with open(os.devnull, 'w') as f:
-            for i in range(len(action[0])):
-            # print "trying", i
-                subprocess.call(["rosservice", "call", "gazebo/apply_joint_effort", """joint_name: '%(joint_name)s'
-effort: %(effort)d
-start_time:
-    secs: 0
-    nsecs: 0
-duration:
-    secs: 0
-    nsecs: 100000000""" % {'joint_name': self.joint_names[i], 'effort': action[0][i]}], stdout=f)
+        call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
+        for i in range(len(action[0])):
+            try: 
+                call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration.from_sec(0.1))
+            except rospy.ServiceException, e:
+                print e
+
         self.unpause()
         time.sleep(0.1)
         self.pause()
-        # print "paused again"
         model_state = self.get_model_state()
-        # print "got model state"
-        # standing
         reward, done = standing_objective(self)
-        # print "calculated objective"
         return model_state, reward, done
 
-def parse_state_str(str, isModel):
-    l = str.split()
-    match = np.asarray(l)
-    if isModel:
-        match = match[[13, 15, 17, 20, 22, 24, 26, 30, 32, 34, 37, 39, 41]]
-    else:
-        match = match[[6, 8, 10, 13, 15, 17, 19, 23, 25, 27, 30, 32, 34]]
-    # print match
-    # print match.shape
-    return match.astype(np.float).flatten().reshape((1, 13))
-        # match = m.groups(1)
-        # print match
-        # sys.stdout.flush()
-        # return np.asarray(match).astype(np.float)
-        # return {
-        #   'pose': {
-        #       'position': {
-        #           'x': float(match[0]),
-        #           'y': float(match[1]),
-        #           'z': float(match[2])
-        #       },
-        #       'orientation': {
-        #           'x': float(match[3]),
-        #           'y': float(match[4]),
-        #           'z': float(match[5]),
-        #           'w': float(match[6])
-        #       }
-        #   },
-        #   'twist': {
-        #       'linear': {
-        #           'x': float(match[7]),
-        #           'y': float(match[8]),
-        #           'z': float(match[9])
-        #       },
-        #       'angular': {
-        #           'x': float(match[10]),
-        #           'y': float(match[11]),
-        #           'z': float(match[12])
-        #       }
-        #   }
-        # }
+def parse_state(state):
+    p = state.pose.position
+    o = state.pose.orientation
+    l = state.twist.linear
+    a = state.twist.angular
+    return np.asarray([p.x, p.y, p.z, o.x, o.y, o.z, o.w, l.x, l.y, l.z, a.x, a.y, a.z]).reshape((1, 13))
 
 def standing_objective(env):
     head_state = env.get_link_state("link8")
-    # print head_state
-    loss = 3.75 - head_state[0, 2]
-    # loss = np.sum(np.square(model_state))
+    loss = (3.75 - head_state[0, 2])**2
     done = True if loss > 1 else False
     return -loss, done
 
@@ -198,24 +164,33 @@ def sitting_objective(model_state):
     pass
 
 def main():
+    uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+    roslaunch.configure_logging(uuid)
+    launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch"])
+    launch.start()
+    rospy.wait_for_service('gazebo/get_model_state')
+    rospy.wait_for_service('gazebo/get_link_state')
+    rospy.wait_for_service('gazebo/reset_simulation')
+    rospy.wait_for_service('gazebo/pause_physics')
+    rospy.wait_for_service('gazebo/unpause_physics')
+    rospy.wait_for_service('gazebo/apply_joint_effort')
     env = Env()
     env.pause()
-    env.spawn_figure()
 
     AC = ActorCritic(env)
 
-    num_trials = 20 #1000
-    trial_len = 200
+    num_trials = 2000
+    trial_len = 600 #60 sec = 1 min
     for j in range(num_trials):
-        cur_state = env.reset()
+        env.reset()
+        cur_state = env.get_model_state()
         AC.clear_memory()
         for i in range(trial_len):
             action = AC.act(cur_state)
-            print i
             new_state, reward, done = env.step(action)
-            if done:
-                print "done"
-                print env.get_model_state()
+            if done or i+1 == trial_len:
+                if j%10 == 0:
+                    print "trial", j, "lasted", i * 0.1
                 break
 
             target_action = AC.actor_model.predict(new_state).reshape((1, 10))
@@ -228,12 +203,13 @@ def main():
             cur_state = new_state
     AC.actor_model.save_weights("actor_model.h5")
     AC.critic_model.save_weights("critic_model.h5")
+    launch.shutdown()
 
-def validate():
+def validate(): #needs fixing
     actor_model = load_model("actor_model.h5")
     env = Env()
     env.pause()
-    env.spawn_figure()
+    # env.spawn_figure()
 
     num_trials = 10
     trial_len = 200
