@@ -68,7 +68,8 @@ class ActorCritic:
 #        self.critic_model.fit(x, y)
 
     def _train_actor(self, samples):
-        x = samples[:, 0:13] # cur_state
+        x = samples[:, 0:13]
+        x = np.concatenate((x, samples[:, 24]), axis=1) # cur_state value
         y = samples[:, 13:23] # action
         self.actor_model.train_on_batch(x, y)
 #        self.actor_model.fit(x, y)
@@ -76,9 +77,9 @@ class ActorCritic:
     def clear_memory(self):
         self.memory = None
 
-    def remember(self, cur_state, action, reward, new_reward):
+    def remember(self, cur_state, action, reward, new_reward, value):
         memory = np.concatenate((cur_state, action), axis=1)
-        memory = np.concatenate((memory, np.asarray([reward, new_reward]).reshape((1, 2))), axis=1)
+        memory = np.concatenate((memory, np.asarray([reward, new_reward, value]).reshape((1, 3))), axis=1)
         # memory = memory.reshape((1, 25))
         # memory = memory.reshape((1, memory.shape[0]))
         if self.memory is None:
@@ -199,12 +200,14 @@ def main():
                 print "trial", j, "lasted", i * 0.1
                 break
 
+            value = AC.critic_model.predict(np.concatenate((cur_state, action)), axis=1)
+
             target_action = AC.actor_model.predict(new_state).reshape((1, 10))
             new_reward = AC.critic_model.predict(
                 np.concatenate((new_state, target_action), axis=1))
             new_reward = reward + AC.gamma * new_reward
 
-            AC.remember(cur_state, action, reward, new_reward)
+            AC.remember(cur_state, action, reward, new_reward, value)
             AC.train(i)
             cur_state = new_state
     AC.actor_model.save_weights("actor_model.h5")
