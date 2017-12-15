@@ -161,7 +161,7 @@ def sitting_objective(model_state):
 def main():
     uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
     roslaunch.configure_logging(uuid)
-    launch = roslaunch.parent.ROSLaunchParent(uuid, ["/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch"])
+    launch = roslaunch.parent.ROSLaunchParent(uuid, ["src/my_robot_control/launch/my_robot.launch"])
     launch.start()
     rospy.wait_for_service('gazebo/get_model_state')
     rospy.wait_for_service('gazebo/get_link_state')
