@@ -35,7 +35,7 @@ class ActorCritic:
 
     def create_actor_model(self): #input: state; output: reward * action val
         model = Sequential()
-        model.add(Dense(13, activation='relu', input_shape=(13, )))
+        model.add(Dense(13, activation='relu', input_shape=(156, )))
         model.add(Dense(26, activation='relu'))
         model.add(Dense(13, activation='relu'))
         model.add(Dense(10, activation='linear'))
@@ -45,7 +45,7 @@ class ActorCritic:
 
     def create_critic_model(self): #input: state; output: reward+gamma*new_reward corr w/ value 
         model = Sequential()
-        model.add(Dense(13, activation='relu', input_shape=(13, )))
+        model.add(Dense(13, activation='relu', input_shape=(156, )))
         model.add(Dense(26, activation='relu'))
         model.add(Dense(13, activation='relu'))
         model.add(Dense(1, activation='linear'))
@@ -104,6 +104,9 @@ class Env:
         self.state_shape = (13, )
         self.action_shape = (10, )
 
+        # head, left and right, lower and upper arm, trunk, left and right, upper and lower leg, left and right foot
+        self.important_links = ['link8', 'link6l', 'link6r', 'link5l', 'link5r', 'link0', 'link1l', 'link1r', 'link2l', 'link2r', 'link9l', 'link9r']
+
         self.pause = rospy.ServiceProxy('gazebo/pause_physics', Empty)
         self.unpause = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
         self.reset = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
@@ -117,6 +120,16 @@ class Env:
         call_get_state = rospy.ServiceProxy('gazebo/get_link_state', GetLinkState)
         output = call_get_state(link_name, 'world')
         return parse_state(output.link_state)
+
+    def get_state(self):
+        # use all links instead of com
+        state_list = []
+
+        for link in self.important_links:
+            link_state = get_link_state(link)
+            state_list.append(link_state)
+
+        return np.concatenate(state_list).flatten()
 
     def sample_action(self):
         return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
@@ -138,7 +151,7 @@ class Env:
         rospy.sleep(0.1)
         self.pause()
         self.clear_joint_forces
-        model_state = self.get_model_state()
+        model_state = self.get_state()
         reward, done = standing_objective(self)
         return model_state, reward, done
 
