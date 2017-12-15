@@ -24,74 +24,73 @@ class ActorCritic:
         self.epsilon_decay = .995
         self.gamma = .95
         self.memory = None
+        self.adam = Adam(lr=self.learning_rate)
 
         self.actor_model = self.create_actor_model()
         self.critic_model = self.create_critic_model()
 
-    def create_actor_model(self):
+    def create_actor_model(self): #input: state; output: reward * action val
         model = Sequential()
         model.add(Dense(13, activation='relu', input_shape=(13, )))
         model.add(Dense(26, activation='relu'))
         model.add(Dense(13, activation='relu'))
-        model.add(Dense(10, activation='relu'))
+        model.add(Dense(10, activation='linear'))
 
-        adam = Adam(lr=self.learning_rate)
-        model.compile(loss='mse', optimizer=adam)
+        model.compile(loss='mse', optimizer=self.adam)
         return model
 
-    def create_critic_model(self):
+    def create_critic_model(self): #input: state; output: reward+gamma*new_reward corr w/ value 
         model = Sequential()
-        model.add(Dense(23, activation='relu', input_shape=(23, )))
-        model.add(Dense(46, activation='relu'))
-        model.add(Dense(23, activation='relu'))
-        model.add(Dense(1, activation='relu'))
+        model.add(Dense(13, activation='relu', input_shape=(13, )))
+        model.add(Dense(26, activation='relu'))
+        model.add(Dense(13, activation='relu'))
+        model.add(Dense(1, activation='linear'))
 
-        adam = Adam(lr=self.learning_rate)
-        model.compile(loss='mse', optimizer=adam)
+        model.compile(loss='mse', optimizer=self.adam)
         return model
 
     def train(self, batch_size):
-        # samples = None
-        # # if len(self.memory) < batch_size:
-        # #     samples = self.memory
-        # # else:
-        # indices = np.random.randint(0, len(self.memory))
-        # samples = self.memory[indices]
-        samples = self.memory
-        self._train_critic(samples)
-        self._train_actor(samples)
+        self._train_critic()
+        self._train_actor()
 
-    def _train_critic(self, samples):
-        x = samples[:, 0:23] # cur_state, action
-        y = samples[:, 24] # new_reward
+    def _train_critic(self):
+        x = self.memory.cur_state
+        y = self.memory.advantages
         self.critic_model.train_on_batch(x, y)
-#        self.critic_model.fit(x, y)
 
-    def _train_actor(self, samples):
-        x = samples[:, 0:13]
-        x = np.concatenate((x, samples[:, 24]), axis=1) # cur_state value
-        y = samples[:, 13:23] # action
+    def _train_actor(self):
+        x = self.memory.cur_state
+        y = self.memory.target
         self.actor_model.train_on_batch(x, y)
-#        self.actor_model.fit(x, y)
 
     def clear_memory(self):
         self.memory = None
 
-    def remember(self, cur_state, action, reward, new_reward, value):
-        memory = np.concatenate((cur_state, action), axis=1)
-        memory = np.concatenate((memory, np.asarray([reward, new_reward, value]).reshape((1, 3))), axis=1)
-        # memory = memory.reshape((1, 25))
-        # memory = memory.reshape((1, memory.shape[0]))
-        if self.memory is None:
-            self.memory = memory
-        else:
-            self.memory = np.concatenate((self.memory, memory))
+    def remember(self, cur_state, action, reward, new_state, done):
+        value = self.critic_model.predict(cur_state)
+        new_value = self.critic_model.predict(new_state)
+
+        if not done:
+            reward += self.gamma * new_value
+        self.memory = {
+            cur_state: cur_state,
+            advantages: action * (reward - value),
+            target: np.asarray(reward).reshape((1, 1))
+        }
 
     def act(self, cur_state):
+
+        policy = self.actor_model.predict(cur_state, batch_size=1)
+        print type(policy)
+        print policy.shape
+
+
         self.epsilon *= self.epsilon_decay
-        if np.random.random() < self.epsilon:
-            return self.env.sample_action().reshape((1, 10))
-        return self.actor_model.predict(cur_state).reshape((1, 10))
+        # if np.random.random() < self.epsilon:
+        return self.env.sample_action().reshape((1, 10))
+
+        # [np.random.choice(for el in policy]
+        # return np.random.choice(self.action)
 
 class Env:
     def __init__(self):
@@ -103,20 +102,6 @@ class Env:
         self.pause = rospy.ServiceProxy('gazebo/pause_physics', Empty)
         self.unpause = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
         self.reset = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
-
-
-    # def pause(self):
-    #     call = rospy.ServiceProxy('gazebo/pause_physics', Empty)
-    #     call()
-
-    # def unpause(self):
-    #     call = rospy.ServiceProxy('gazebo/unpause_physics', Empty)
-    #     call()
-
-    # def reset(self):
-    #     call = rospy.ServiceProxy('gazebo/reset_simulation', Empty)
-    #     call()
-    #     return self.get_model_state()
 
     def get_model_state(self):
         call_get_state = rospy.ServiceProxy('gazebo/get_model_state', GetModelState)
@@ -135,8 +120,6 @@ class Env:
         call = rospy.ServiceProxy('gazebo/clear_joint_forces', JointRequest)
         for i in range(10):
             call({joint_name: self.joint_names[i]})
-        # subprocess.check_output(["rosservice", "call", "gazebo/clear_joint_forces", 
-        #     "{joint_name: %(joint_list)s}" % {'joint_list': self.joint_names}])
 
     def step(self, action):
         call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
@@ -200,14 +183,7 @@ def main():
                 print "trial", j, "lasted", i * 0.1
                 break
 
-            value = AC.critic_model.predict(np.concatenate((cur_state, action)), axis=1)
-
-            target_action = AC.actor_model.predict(new_state).reshape((1, 10))
-            new_reward = AC.critic_model.predict(
-                np.concatenate((new_state, target_action), axis=1))
-            new_reward = reward + AC.gamma * new_reward
-
-            AC.remember(cur_state, action, reward, new_reward, value)
+            AC.remember(cur_state, action, reward, new_state, done)
             AC.train(i)
             cur_state = new_state
     AC.actor_model.save_weights("actor_model.h5")
