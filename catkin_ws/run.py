@@ -133,7 +133,18 @@ class Env:
         return states
 
     def sample_action(self):
-        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
+        j5l6l = random.uniform(-2.5, 2.5)
+        j5r6r = random.uniform(-2.5, 2.5)
+        j45l = random.uniform(-2.5, 2.5)
+        j45r = random.uniform(-2.5, 2.5)
+        j01l = random.uniform(-2.5, 2.5)
+        j01r = random.uniform(-2.5, 2.5)
+        j1l2l = random.uniform(-2.5, 2.5)
+        jlr2r =random.uniform(-2.5, 2.5)
+        j2l9l = random.uniform(-0.5, 0.5)
+        j2r9r = random.uniform(-0.5, 0.5)
+        np.array([])
+        return np.array([j5l6l,j5r6r,j45l,j45r,j01l,j01r,j1l2l,jlr2r,j2l9l,j2r9r])
 
     def clear_joint_forces(self):
         call = rospy.ServiceProxy('gazebo/clear_joint_forces', JointRequest)
@@ -165,7 +176,19 @@ def parse_state(state):
 
 def standing_objective(env):
     head_state = env.get_link_state("link8")
-    loss = (3.75 - head_state[0, 2])**2
+    pelvis_state = env.get_link_state("link0")
+    #lower_l_leg = env.get_link_state("link2l")
+    #lower_r_leg = env.get_link_state("link2r")
+    #upper_l_leg = env.get_link_state("link2l")
+    #upper_r_leg = env.get_link_state("link2r")
+    lfoot = env.get_link_state("link9l")
+    rfoot = env.get_link_state("link9r")
+    midpointx = (lfoot[0,0] + rfoot[0,0])/2
+    midpointy = (lfoot[0,1] + rfoot[0,1])/2
+    
+    loss = (3.75 - head_state[0, 2])**2 + ( midpointx - pelvis_state[0,0])**2 + ( midpointy - pelvis_state[0,1])**2
+    loss += abs(pelvis_state[0,10]) + abs(pelvis_state[0,11]) + abs(pelvis_state[0,12])
+    
     done = True if loss > 1 else False
     return -loss, done
 
