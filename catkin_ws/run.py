@@ -23,7 +23,11 @@ class ActorCritic:
         self.epsilon = 1.0
         self.epsilon_decay = .995
         self.gamma = .95
-        self.memory = None
+        # self.memory = None
+        self.cur_state = None
+        self.cur_target = None
+        self.cur_advantages = None
+
         self.adam = Adam(lr=self.learning_rate)
 
         self.actor_model = self.create_actor_model()
@@ -54,13 +58,13 @@ class ActorCritic:
         self._train_actor()
 
     def _train_critic(self):
-        x = self.memory.cur_state
-        y = self.memory.advantages
+        x = self.cur_state
+        y = self.advantages
         self.critic_model.train_on_batch(x, y)
 
     def _train_actor(self):
-        x = self.memory.cur_state
-        y = self.memory.target
+        x = self.cur_state
+        y = self.target
         self.actor_model.train_on_batch(x, y)
 
     def clear_memory(self):
@@ -72,22 +76,23 @@ class ActorCritic:
 
         if not done:
             reward += self.gamma * new_value
-        self.memory = {
-            cur_state: cur_state,
-            advantages: action * (reward - value),
-            target: np.asarray(reward).reshape((1, 1))
-        }
+
+        self.cur_state = cur_state
+        self.target = action * (reward - value)
+        self.advantages = np.asarray(reward).reshape((1, 1))
 
     def act(self, cur_state):
 
-        policy = self.actor_model.predict(cur_state, batch_size=1)
-        print type(policy)
-        print policy.shape
+        # policy = self.actor_model.predict(cur_state, batch_size=1)
+        # print type(policy)
+        # print policy.shape
+        # print policy
 
 
         self.epsilon *= self.epsilon_decay
-        # if np.random.random() < self.epsilon:
-        return self.env.sample_action().reshape((1, 10))
+        if np.random.random() < self.epsilon:
+            return self.env.sample_action().reshape((1, 10))
+        return self.actor_model.predict(cur_state, batch_size=1)
 
         # [np.random.choice(for el in policy]
         # return np.random.choice(self.action)
