@@ -173,8 +173,18 @@ def parse_state(state):
 
 def standing_objective(env):
     head_state = env.get_link_state("link8")
-    loss = math.sqrt((3.75 - head_state[0, 2])**2 + (0 - head_state[0, 0])**2 + (0 - head_state[0, 1])**2)
-    done = True if loss > 1 else False
+    pelvis_state = env.get_link_state("link0") 
+    lfoot = env.get_link_state("link9l") 
+    rfoot = env.get_link_state("link9r") 
+    midpointx = (lfoot[0,0] + rfoot[0,0])/2 
+    midpointy = (lfoot[0,1] + rfoot[0,1])/2 
+
+    loss = math.sqrt((3.75 - head_state[0, 2])**2 + (0 - head_state[0, 0])**2 + (0 - head_state[0, 1])**2) 
+    loss += math.sqrt((midpointx - pelvis_state[0,0])**2 + ( midpointy - pelvis_state[0,1])**2)
+    loss += abs(pelvis_state[0,10]) + abs(pelvis_state[0,11]) + abs(pelvis_state[0,12]) 
+
+
+    done = True if loss > 0.5 else False
     return -loss, done
 
 def sitting_objective(model_state):
@@ -195,8 +205,21 @@ def main():
     env.pause()
 
     AC = ActorCritic(env)
-
+    thirdLastLasted = 9999
+    secondLastLasted = 9999
+    lasted = 9999
+    bestLasted = 0
+    bestIteration = 0
     num_trials = 2000
+    for fname in os.listdir(os.curdir):
+        if "actor_model" in fname:
+            AC.actor_model.load_weights(fname)
+            os.remove(fname)
+        if "critic_model" in fname:
+            AC.critic_model.load_weights(fname)
+            os.remove(fname)
+
+    reloaded = False
     trial_len = 600 #60 sec = 1 min
     for j in range(num_trials):
         env.reset()
@@ -207,7 +230,18 @@ def main():
             # print action
             new_state, reward, done = env.step(action)
             if done or i+1 == trial_len:
-                print "trial", j, "lasted", i * 0.1
+                lasted = i*0.1
+                print "trial", j, "lasted", lasted
+                reloaded = False
+                if lasted > bestLasted*1.1 and j > 0:
+                    bestLasted = lasted
+                    if bestIteration > 0:
+                        os.remove("actor_model_%(stamp)d.h5" % {'stamp': bestIteration})
+                        os.remove("critic_model_%(stamp)d.h5" % {'stamp': bestIteration})
+                    bestIteration = j
+                    print "Saving model, iteration ", bestIteration, " lasted ", lasted
+                    AC.actor_model.save_weights("actor_model_%(stamp)d.h5" % {'stamp': bestIteration})
+                    AC.critic_model.save_weights("critic_model_%(stamp)d.h5" % {'stamp': bestIteration} )
                 break
 
             AC.remember(cur_state, action, reward, new_state, done)
