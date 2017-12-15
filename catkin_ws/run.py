@@ -126,10 +126,11 @@ class Env:
         state_list = []
 
         for link in self.important_links:
-            link_state = get_link_state(link)
+            link_state = self.get_link_state(link)
             state_list.append(link_state)
 
-        return np.concatenate(state_list).flatten()
+        states = np.concatenate(state_list).reshape(1, 156)
+        return states
 
     def sample_action(self):
         return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
@@ -191,8 +192,8 @@ def main():
     trial_len = 600 #60 sec = 1 min
     for j in range(num_trials):
         env.reset()
-        cur_state = env.get_model_state()
-        AC.clear_memory()
+        cur_state = env.get_state()
+        # AC.clear_memory()
         for i in range(trial_len):
             action = AC.act(cur_state)
             # print action
