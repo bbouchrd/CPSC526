@@ -1,8 +1,8 @@
 import subprocess
 import numpy as np 
 import time
-import re
 import random
+import math
 import sys
 import os
 
@@ -12,7 +12,7 @@ import roslaunch
 import rospy
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, LeakyReLU, ThresholdedReLU, Lambda
 from keras.optimizers import Adam
 from keras.models import load_model
 
@@ -30,26 +30,36 @@ class ActorCritic:
 
         self.adam = Adam(lr=self.learning_rate)
 
+        self.leaky_alpha = 0.0000001
+
         self.actor_model = self.create_actor_model()
         self.critic_model = self.create_critic_model()
 
     def create_actor_model(self): #input: state; output: reward * action val
         model = Sequential()
-        model.add(Dense(13, activation='relu', input_shape=(156, )))
+        # model.add(Dense(13, activation='relu', input_shape=(156, )))
+        model.add(Dense(13, input_shape=(156, )))
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
         model.add(Dense(26, activation='relu'))
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
         model.add(Dense(13, activation='relu'))
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
         model.add(Dense(10, activation='linear'))
 
         model.compile(loss='mse', optimizer=self.adam)
         return model
 
-    def create_critic_model(self): #input: state; output: reward+gamma*new_reward corr w/ value 
+    def create_critic_model(self): #input: state; output: loss+gamma*new loss corr w/ value 
         model = Sequential()
         model.add(Dense(13, activation='relu', input_shape=(156, )))
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
         model.add(Dense(26, activation='relu'))
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
         model.add(Dense(13, activation='relu'))
-        model.add(Dense(1, activation='linear'))
-
+        model.add(LeakyReLU(alpha=self.leaky_alpha))
+        model.add(Dense(1, activation='relu'))
+        model.add(ThresholdedReLU(theta=0.0))
+        model.add(Lambda(lambda x: x - 1.0))
         model.compile(loss='mse', optimizer=self.adam)
         return model
 
@@ -70,29 +80,24 @@ class ActorCritic:
     def clear_memory(self):
         self.memory = None
 
-    def remember(self, cur_state, action, reward, new_state, done):
+    def remember(self, cur_state, action, loss, new_state, done):
         value = self.critic_model.predict(cur_state)
         new_value = self.critic_model.predict(new_state)
 
         if not done:
-            reward += self.gamma * new_value
+            loss += self.gamma * new_value
 
         self.cur_state = cur_state
-        self.target = action * (reward - value)
-        self.advantages = np.asarray(reward).reshape((1, 1))
+        self.advantages = np.asarray(loss).reshape((1, 1))
+        self.target = action * (-value)
 
     def act(self, cur_state):
-
-        # policy = self.actor_model.predict(cur_state, batch_size=1)
-        # print type(policy)
-        # print policy.shape
-        # print policy
-
-
         self.epsilon *= self.epsilon_decay
         if np.random.random() < self.epsilon:
             return self.env.sample_action().reshape((1, 10))
-        return self.actor_model.predict(cur_state, batch_size=1)
+        policy = self.actor_model.predict(cur_state, batch_size=1)
+
+        return np.asarray([np.random.normal(loc=policy[x], scale=0.1) for x in range(len(policy))]).reshape((1, 10))
 
         # [np.random.choice(for el in policy]
         # return np.random.choice(self.action)
@@ -126,13 +131,19 @@ class Env:
         state_list = []
 
         for link in self.important_links:
-            link_state = get_link_state(link)
+            link_state = self.get_link_state(link)
             state_list.append(link_state)
 
-        return np.concatenate(state_list).flatten()
+        states = np.concatenate(state_list).reshape(1, 156)
+        return states
 
     def sample_action(self):
-        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
+        sampled = (np.random.random([self.action_space_shape[0]]) - 0.5) * 20
+
+        # feet
+        sampled[8] *= 0.1 
+        sampled[9] *= 0.1
+        return sampled
 
     def clear_joint_forces(self):
         call = rospy.ServiceProxy('gazebo/clear_joint_forces', JointRequest)
@@ -142,7 +153,7 @@ class Env:
     def step(self, action):
         call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
         for i in range(len(action[0])):
-            try: 
+            try:
                 call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration(0.1))
             except rospy.ServiceException, e:
                 print e
@@ -150,10 +161,28 @@ class Env:
         self.unpause()
         rospy.sleep(0.1)
         self.pause()
-        self.clear_joint_forces
+        self.clear_joint_forces()
         model_state = self.get_state()
-        reward, done = standing_objective(self)
-        return model_state, reward, done
+        # loss, done = standing_objective(self)
+        loss, done = sitting_objective(self)
+        return model_state, loss, done
+
+    def try_sit(self, effort, isfeet, isknee):
+        self.unpause()
+        call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
+        if isfeet:
+            call(self.joint_names[8], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+            call(self.joint_names[9], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+        elif isknee:
+            call(self.joint_names[6], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+            call(self.joint_names[7], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+        else:
+            call(self.joint_names[4], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+            call(self.joint_names[5], effort, rospy.Duration.from_sec(0), rospy.Duration(0.01))
+
+        # self.unpause()
+        # self.clear_joint_forces()
+
 
 def parse_state(state):
     p = state.pose.position
@@ -164,12 +193,57 @@ def parse_state(state):
 
 def standing_objective(env):
     head_state = env.get_link_state("link8")
-    loss = (3.75 - head_state[0, 2])**2
-    done = True if loss > 1 else False
-    return -loss, done
+    pelvis_state = env.get_link_state("link0")
+    leftknee_state = env.get_link_state("link1l")
+    rightknee_state = env.get_link_state("link1r")
+    loss = (3.75 - head_state[0, 2])**2 + math.sqrt((0 - head_state[0, 0])**2 + (0 - head_state[0, 1])**2) + math.sqrt((0 - pelvis_state[0, 0])**2 + (0 - pelvis_state[0, 1])**2) + math.sqrt((0 - leftknee_state[0, 1])**2 + (0 - rightknee_state[0, 1])**2)
+    done = True if loss > 0.2 else False
+    return loss - 1, done
 
-def sitting_objective(model_state):
-    pass
+def sitting_objective(env):
+    leftknee_state = env.get_link_state("link1l")
+    rightknee_state = env.get_link_state("link1r")
+    loss = math.sqrt((0 - leftknee_state[0, 1])**2 + (0 - rightknee_state[0, 1])**2)
+    done = True if loss > 0.1 else False
+    return loss - 1, done
+
+def sit():
+    uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+    roslaunch.configure_logging(uuid)
+    launch = roslaunch.parent.ROSLaunchParent(uuid, ["src/my_robot_control/launch/my_robot.launch"])
+    launch.start()
+    rospy.wait_for_service('gazebo/reset_simulation')
+    rospy.wait_for_service('gazebo/pause_physics')
+    rospy.wait_for_service('gazebo/unpause_physics')
+    rospy.wait_for_service('gazebo/apply_joint_effort')
+    env = Env()
+    env.pause()
+
+    isfeet = True
+
+    while True:
+        string = raw_input("Input")
+        if string == "Q":
+            break
+        elif string == "R":
+            env.reset()
+            env.pause()
+        elif string == "F":
+            isfeet = True
+            isknee = False
+        elif string == "K":
+            isfeet = False
+            isknee = True
+        elif string == "H":
+            isfeet = False
+            isknee = False
+        else:
+            try:
+                effort = float(string)
+                env.try_sit(effort, isfeet, isknee)
+            except:
+                pass
+
 
 def main():
     uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
@@ -185,23 +259,23 @@ def main():
     env = Env()
     env.pause()
 
+    global AC
     AC = ActorCritic(env)
 
     num_trials = 2000
     trial_len = 600 #60 sec = 1 min
     for j in range(num_trials):
         env.reset()
-        cur_state = env.get_model_state()
-        AC.clear_memory()
+        cur_state = env.get_state()
         for i in range(trial_len):
             action = AC.act(cur_state)
-            # print action
-            new_state, reward, done = env.step(action)
+            new_state, loss, done = env.step(action)
             if done or i+1 == trial_len:
                 print "trial", j, "lasted", i * 0.1
+                print action
                 break
 
-            AC.remember(cur_state, action, reward, new_state, done)
+            AC.remember(cur_state, action, loss, new_state, done)
             AC.train(i)
             cur_state = new_state
     AC.actor_model.save_weights("actor_model.h5")
@@ -229,5 +303,6 @@ def validate(): #needs fixing
             rewards.append(reward)
             cur_state = new_state
         print "rewards for trial", j, rewards
-main()
+sit()
+# main()
 # validate()
