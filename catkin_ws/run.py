@@ -1,8 +1,8 @@
 import subprocess
 import numpy as np 
 import time
-import re
 import random
+import math
 import sys
 import os
 
@@ -12,7 +12,7 @@ import roslaunch
 import rospy
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, LeakyReLU
 from keras.optimizers import Adam
 from keras.models import load_model
 
@@ -35,9 +35,13 @@ class ActorCritic:
 
     def create_actor_model(self): #input: state; output: reward * action val
         model = Sequential()
-        model.add(Dense(13, activation='relu', input_shape=(156, )))
+        # model.add(Dense(13, activation='relu', input_shape=(156, )))
+        model.add(Dense(13, input_shape=(156, )))
+        model.add(LeakyReLU(alpha=0.001))
         model.add(Dense(26, activation='relu'))
+        model.add(LeakyReLU(alpha=0.001))
         model.add(Dense(13, activation='relu'))
+        model.add(LeakyReLU(alpha=0.001))
         model.add(Dense(10, activation='linear'))
 
         model.compile(loss='mse', optimizer=self.adam)
@@ -47,6 +51,7 @@ class ActorCritic:
         model = Sequential()
         model.add(Dense(13, activation='relu', input_shape=(156, )))
         model.add(Dense(26, activation='relu'))
+        model.add(LeakyReLU(alpha=0.001))
         model.add(Dense(13, activation='relu'))
         model.add(Dense(1, activation='linear'))
 
@@ -133,7 +138,7 @@ class Env:
         return states
 
     def sample_action(self):
-        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 5
+        return (np.random.random([self.action_space_shape[0]]) - 0.5) * 20
 
     def clear_joint_forces(self):
         call = rospy.ServiceProxy('gazebo/clear_joint_forces', JointRequest)
@@ -143,8 +148,11 @@ class Env:
     def step(self, action):
         call = rospy.ServiceProxy('gazebo/apply_joint_effort', ApplyJointEffort)
         for i in range(len(action[0])):
-            try: 
-                call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration(0.1))
+            try:
+                if i > 7:
+                    call(self.joint_names[i], action[0][i] * 0.1, rospy.Duration.from_sec(0), rospy.Duration(0.1))
+                else: 
+                    call(self.joint_names[i], action[0][i], rospy.Duration.from_sec(0), rospy.Duration(0.1))
             except rospy.ServiceException, e:
                 print e
 
@@ -165,7 +173,7 @@ def parse_state(state):
 
 def standing_objective(env):
     head_state = env.get_link_state("link8")
-    loss = (3.75 - head_state[0, 2])**2
+    loss = math.sqrt((3.75 - head_state[0, 2])**2 + (0 - head_state[0, 0])**2 + (0 - head_state[0, 1])**2)
     done = True if loss > 1 else False
     return -loss, done
 
