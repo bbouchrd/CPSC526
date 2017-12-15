@@ -1,0 +1,592 @@
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+[31mrun_id on parameter server does not match declared run_id: c91fbb98-dbee-11e7-8a0c-08002760dc10 vs c9473a88-dbee-11e7-8a0c-08002760dc10[0m
+[31mThe traceback for the exception was written to the log file[0m
+... logging to /home/julinas/.ros/log/c9473a88-dbee-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-6501.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:44571/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+auto-starting new master
+[1mprocess[master]: started with pid [6523][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+Traceback (most recent call last):
+  File "/opt/ros/kinetic/bin/rosmaster", line 35, in <module>
+    rosmaster.rosmaster_main()
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosmaster/main.py", line 80, in rosmaster_main
+    configure_logging()   
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosmaster/main.py", line 58, in configure_logging
+    _log_filename = rosgraph.roslogging.configure_logging('rosmaster', logging.DEBUG, filename=filename)
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosgraph/roslogging.py", line 126, in configure_logging
+    logging.config.fileConfig(config_file, disable_existing_loggers=False)
+  File "/usr/lib/python2.7/logging/config.py", line 69, in fileConfig
+    import ConfigParser
+  File "/usr/lib/python2.7/ConfigParser.py", line 588, in <module>
+    class ConfigParser(RawConfigParser):
+  File "/usr/lib/python2.7/ConfigParser.py", line 676, in ConfigParser
+    _KEYCRE = re.compile(r"%\(([^)]*)\)s|.")
+  File "/usr/lib/python2.7/re.py", line 194, in compile
+    return _compile(pattern, flags)
+  File "/usr/lib/python2.7/re.py", line 249, in _compile
+    p = sre_compile.compile(pattern, flags)
+  File "/usr/lib/python2.7/sre_compile.py", line 576, in compile
+    code = _code(p, flags)
+  File "/usr/lib/python2.7/sre_compile.py", line 561, in _code
+    _compile(code, p.data, flags)
+  File "/usr/lib/python2.7/sre_compile.py", line 194, in _compile
+    tailappend(_len(code)); emit(0)
+KeyboardInterrupt
+[master] killing on exit
+/opt/ros/kinetic/lib/gazebo_ros/debug: 5: [: Linux: unexpected operator
+Unhandled exception in thread started by <bound method XmlRpcNode.run of <rosgraph.xmlrpc.XmlRpcNode object at 0x7f731874d8d0>>
+ERROR: Unable to start XML-RPC server, port 11311 is already in use
+Traceback (most recent call last):
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 215, in run
+    self._run()
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 284, in _run
+    self._run_init()
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 234, in _run_init
+    self.server = ThreadingXMLRPCServer((bind_address, port), log_requests)
+  File "/opt/ros/kinetic/lib/python2.7/dist-packages/rosgraph/xmlrpc.py", line 115, in __init__
+    SimpleXMLRPCServer.__init__(self, addr, SilenceableXMLRPCRequestHandler, log_requests)
+  File "/usr/lib/python2.7/SimpleXMLRPCServer.py", line 593, in __init__
+    SocketServer.TCPServer.__init__(self, addr, requestHandler, bind_and_activate)
+  File "/usr/lib/python2.7/SocketServer.py", line 417, in __init__
+    self.server_bind()
+  File "/usr/lib/python2.7/SocketServer.py", line 431, in server_bind
+    self.socket.bind(self.server_address)
+  File "/usr/lib/python2.7/socket.py", line 228, in meth
+    return getattr(self._sock,name)(*args)
+socket.error: [Errno 98] Address already in use
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gzserver...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7fffcebd5700 (LWP 6792)]
+[New Thread 0x7fffca923700 (LWP 6793)]
+[New Thread 0x7fffca122700 (LWP 6794)]
+[33m[ WARN] [1512720475.529210312]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720476.029566410]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720476.529830018]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720477.030149608]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720477.530349355]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720478.030548004]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720478.530955678]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720479.031214958]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720479.531470732]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720480.031758045]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720480.531949834]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720481.032226820]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720481.532444228]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720482.032816834]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720482.533012311]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720483.033310535]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720483.533821839]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720484.034259076]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720484.534526822]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720485.034788118]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720485.535004285]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720486.035322486]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720486.535732778]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720487.036039004]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720487.536247027]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720488.036612036]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720488.542770245]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720489.042964365]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720489.543251308]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720490.043484417]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720490.543700057]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720491.044040546]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720491.544303395]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720492.044577067]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720492.544888432]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720493.045072440]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720493.545380245]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720494.045618855]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720494.545877671]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720495.046152621]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720495.546436229]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720496.046648751]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720496.546883765]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720497.047184661]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720497.547487982]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720498.047766914]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720498.548088300]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720499.048303683]: No ROS master - s/opt/ros/kinetic/lib/gazebo_ros/debug: 5: [: Linux: unexpected operator
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gzserver...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7fffcebd5700 (LWP 6943)]
+[New Thread 0x7fffca923700 (LWP 6944)]
+[Thread 0x7fffcebd5700 (LWP 6943) exited]
+[Thread 0x7ffff7f5a280 (LWP 6939) exited]
+[Inferior 1 (process 6939) exited with code 0377]
+(gdb) quit
+tart roscore to continue...[0m
+[33m[ WARN] [1512720499.548623959]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720500.048798952]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720500.551610180]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720501.052719427]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720501.553011988]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720502.053346793]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720502.553854861]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720503.054046087]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720503.554419872]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720504.054643453]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720504.554825067]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720505.055111044]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720505.555375916]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720506.055567546]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720506.555811475]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720507.056015056]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720507.556354810]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720508.056589666]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720508.556835853]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720509.057122354]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720509.557510775]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720510.057934179]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720510.558293415]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720511.058715376]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720511.558937194]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720512.059227606]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720512.559435246]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720513.059799816]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720513.559984084]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720514.060195027]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720514.560377989]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720515.062859045]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720515.563631099]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720516.066764643]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720516.573139151]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720517.073456529]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720517.573646767]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720518.073942768]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720518.574194875]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720519.074400660]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720519.574616934]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720520.074872863]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720520.575105391]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720521.075398688]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720521.575630541]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720522.075900473]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [1512720522.576277165]: No ROS master - start roscore to continue...[0m
+[33m[ WARN] [15127205Quit
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 6788] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+... logging to /home/julinas/.ros/log/fd15e7c4-dbee-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-6851.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:45689/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+[1msetting /run_id to fd15e7c4-dbee-11e7-8a0c-08002760dc10[0m
+[1mprocess[rosout-1]: started with pid [6887][0m
+started core service [/rosout]
+[1mprocess[gazebo-2]: started with pid [6890][0m
+[1m[gazebo-2] process has finished cleanly
+log file: /home/julinas/.ros/log/fd15e7c4-dbee-11e7-8a0c-08002760dc10/gazebo-2*.log[0m
+[rosout-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+... logging to /home/julinas/.ros/log/e43a3d72-dbee-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-6689.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:39863/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+auto-starting new master
+[1mprocess[master]: started with pid [6715][0m
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+[1msetting /run_id to e43a3d72-dbee-11e7-8a0c-08002760dc10[0m
+[1mprocess[rosout-1]: started with pid [6728][0m
+started core service [/rosout]
+[1mprocess[gazebo-2]: started with pid [6744][0m
+[gazebo-2] killing on exit
+[rosout-1] killing on exit
+[master] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+/opt/ros/kinetic/lib/gazebo_ros/debug: 5: [: Linux: unexpected operator
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gzserver...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7fffcebd5700 (LWP 7449)]
+[New Thread 0x7fffca923700 (LWP 7450)]
+[New Thread 0x7fffca122700 (LWP 7451)]
+[New Thread 0x7fffc9921700 (LWP 7454)]
+[New Thread 0x7fffc9120700 (LWP 7455)]
+[New Thread 0x7fffc891f700 (LWP 7456)]
+[New Thread 0x7fffc3fff700 (LWP 7468)]
+[New Thread 0x7fffc37fe700 (LWP 7469)]
+[New Thread 0x7fffc2ffd700 (LWP 7470)]
+[New Thread 0x7fffc27fc700 (LWP 7471)]
+[New Thread 0x7fffc1ffb700 (LWP 7473)]
+[New Thread 0x7fff9e984700 (LWP 7474)]
+[New Thread 0x7fff9db45700 (LWP 7475)]
+[New Thread 0x7fff9d744700 (LWP 7520)]
+[New Thread 0x7fff9cf43700 (LWP 7521)]
+[New Thread 0x7fff9c742700 (LWP 7522)]
+[New Thread 0x7fff9bf41700 (LWP 7523)]
+Quit
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 7445] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+... logging to /home/julinas/.ros/log/16535bfe-dbef-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-7409.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:35427/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+core service [/rosout] found
+[1mprocess[gazebo-1]: started with pid [7427][0m
+[gazebo-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+/opt/ros/kinetic/lib/gazebo_ros/debug: 5: [: Linux: unexpected operator
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gzserver...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7fffcebd5700 (LWP 7634)]
+[New Thread 0x7fffca923700 (LWP 7635)]
+[New Thread 0x7fffca122700 (LWP 7636)]
+[New Thread 0x7fffc9921700 (LWP 7639)]
+[New Thread 0x7fffc9120700 (LWP 7640)]
+[New Thread 0x7fffc891f700 (LWP 7641)]
+[New Thread 0x7fffc3fff700 (LWP 7653)]
+[New Thread 0x7fffc37fe700 (LWP 7654)]
+[New Thread 0x7fffc2ffd700 (LWP 7655)]
+[New Thread 0x7fffc27fc700 (LWP 7656)]
+[New Thread 0x7fffc1ffb700 (LWP 7658)]
+[New Thread 0x7fff9e984700 (LWP 7659)]
+[New Thread 0x7fff9db45700 (LWP 7660)]
+[New Thread 0x7fff9d744700 (LWP 7705)]
+[New Thread 0x7fff9cf43700 (LWP 7706)]
+[New Thread 0x7fff9c742700 (LWP 7707)]
+[New Thread 0x7fff9bf41700 (LWP 7708)]
+Quit
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 7630] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+... logging to /home/julinas/.ros/log/16535bfe-dbef-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-7594.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:40411/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+core service [/rosout] found
+[1mprocess[gazebo-1]: started with pid [7612][0m
+[gazebo-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+/opt/ros/kinetic/lib/gazebo_ros/debug: 5: [: Linux: unexpected operator
+GNU gdb (Ubuntu 7.11.1-0ubuntu1~16.5) 7.11.1
+Copyright (C) 2016 Free Software Foundation, Inc.
+License GPLv3+: GNU GPL version 3 or later <http://gnu.org/licenses/gpl.html>
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.  Type "show copying"
+and "show warranty" for details.
+This GDB was configured as "x86_64-linux-gnu".
+Type "show configuration" for configuration details.
+For bug reporting instructions, please see:
+<http://www.gnu.org/software/gdb/bugs/>.
+Find the GDB manual and other documentation resources online at:
+<http://www.gnu.org/software/gdb/documentation/>.
+For help, type "help".
+Type "apropos word" to search for commands related to "word"...
+Reading symbols from gzserver...(no debugging symbols found)...done.
+[Thread debugging using libthread_db enabled]
+Using host libthread_db library "/lib/x86_64-linux-gnu/libthread_db.so.1".
+[New Thread 0x7fffcebd5700 (LWP 7768)]
+[New Thread 0x7fffca923700 (LWP 7769)]
+[New Thread 0x7fffca122700 (LWP 7770)]
+[New Thread 0x7fffc9921700 (LWP 7773)]
+[New Thread 0x7fffc9120700 (LWP 7774)]
+[New Thread 0x7fffc891f700 (LWP 7775)]
+[New Thread 0x7fffc3fff700 (LWP 7787)]
+[New Thread 0x7fffc37fe700 (LWP 7788)]
+[New Thread 0x7fffc2ffd700 (LWP 7789)]
+[New Thread 0x7fffc27fc700 (LWP 7790)]
+[New Thread 0x7fffc1ffb700 (LWP 7792)]
+[New Thread 0x7fff9e984700 (LWP 7793)]
+[New Thread 0x7fff9db45700 (LWP 7794)]
+[New Thread 0x7fff9d744700 (LWP 7839)]
+[New Thread 0x7fff9cf43700 (LWP 7840)]
+[New Thread 0x7fff9c742700 (LWP 7841)]
+[New Thread 0x7fff9bf41700 (LWP 7842)]
+Quit
+(gdb) quit
+A debugging session is active.
+
+	Inferior 1 [process 7764] will be killed.
+
+Quit anyway? (y or n) [answered Y; input not from terminal]
+... logging to /home/julinas/.ros/log/16535bfe-dbef-11e7-8a0c-08002760dc10/roslaunch-julinas-VirtualBox-7728.log
+Checking log directory for disk usage. This may take awhile.
+Press Ctrl-C to interrupt
+Done checking log file disk usage. Usage is <1GB.
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch
+[1mstarted roslaunch server http://julinas-VirtualBox:38819/[0m
+
+SUMMARY
+========
+
+PARAMETERS
+ * /rosdistro: kinetic
+ * /rosversion: 1.12.7
+ * /use_sim_time: True
+
+NODES
+  /
+    gazebo (gazebo_ros/debug)
+
+[1mROS_MASTER_URI=http://localhost:11311[0m
+]2;/home/julinas/catkin_ws/src/my_robot_control/launch/my_robot.launch http://localhost:11311
+core service [/rosout] found
+[1mprocess[gazebo-1]: started with pid [7746][0m
+[gazebo-1] killing on exit
+shutting down processing monitor...
+... shutting down processing monitor complete
+[1mdone[0m
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
+Usage: roslaunch [options] [package] <filename> [arg_name:=value...]
+       roslaunch [options] <filename> [<filename>...] [arg_name:=value...]
+
+If <filename> is a single dash ('-'), launch XML is read from standard input.
+
+roslaunch: error: The following input files do not exist: &
